@@ -1,0 +1,41 @@
+{% extends 'tasks/base.html' %}
+
+{% block content %}
+<div class="form-group" style="width: 100%">
+    <form method="POST" action="/">
+        {% csrf_token %}
+        {{ form.title }}
+        <input type="submit" class="btn btn-success" name="Create Tasks"/>
+    </form>
+</div>
+<table class="table">
+    <thead>
+    <tr>
+        <th scope="col">#</th>
+        <th scope="col">Task</th>
+        <th scope="col">Action</th>
+    </tr>
+    </thead>
+    <tbody>
+
+    {% for task in tasks %}
+    <tr>
+        <th scope="row">{{ forloop.counter}}</th>
+        <td>
+            {% if task.complete == True %}
+            <strike>{{ task|truncatechars_html:50 }}</strike>
+            {% else %}
+            <span>{{ task|truncatechars_html:50 }}</span>
+            {% endif %}
+        </td>
+        <td><a href="{% url 'update_task' task.id %}" class="btn btn-link  "> <i class="fa fa-edit"></i> </a> | <a
+                href="{% url 'delete_my_task' task.id %}" class="btn btn-link">
+            <i class="fa fa-trash text-danger"></i> </a></td>
+    </tr>
+    {% endfor %}
+
+    </tbody>
+</table>
+
+
+{% endblock %}
